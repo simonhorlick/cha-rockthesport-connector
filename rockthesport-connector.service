@@ -1,0 +1,20 @@
+[Unit]
+Description=RockTheSport Connector
+After=docker.service
+Requires=docker.service
+
+[Service]
+Restart=always
+RestartSec=30
+ExecStart=/usr/bin/docker run \
+  --rm \
+  --name=rockthesport-connector \
+  --log-opt max-size=500m \
+  -v /etc/rockthesport/config:/usr/src/app/.env \
+  -p 0.0.0.0:4005:4000 \
+  ghcr.io/admiral-digital/cha-rockthesport-connector:latest
+ExecStop=/usr/bin/docker stop rockthesport-connector
+
+[Install]
+WantedBy=multi-user.target
+
